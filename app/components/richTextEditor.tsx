@@ -7,7 +7,6 @@ import {
   convertFromRaw,
 } from "draft-js";
 import StyledSpan from "./StyledSpan";
-import dynamic from "next/dynamic";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "draft-js/dist/Draft.css";
 
@@ -18,10 +17,6 @@ import Typography from "@mui/material/Typography";
 
 //icons
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
-// const Editor = dynamic(
-//   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
-//   { ssr: false }
-// );
 
 type richTextEditorProps = {};
 
@@ -54,15 +49,11 @@ const RichTextEditor: React.FC<richTextEditorProps> = () => {
   ]);
 
   const [editorState, setEditorState] = useState<EditorState>(
-    EditorState.createEmpty(compositeDecorator)
+    EditorState.createWithContent(emptyContentState, compositeDecorator)
   );
-  const onEditorStateChange = (newEditorState: EditorState): void => {
-    setEditorState(newEditorState);
-  };
 
   const hasContent = editorState.getCurrentContent().hasText();
-
-  console.log(hasContent);
+  const [isFocused, setIsFocused] = useState(false);
 
   function hashtagStrategy(contentBlock: any, callback: Function) {
     findWithRegex(HASHTAG_REGEX, contentBlock, callback);
@@ -87,7 +78,7 @@ const RichTextEditor: React.FC<richTextEditorProps> = () => {
       position="relative"
       width="100%"
       height="4rem"
-      border={"1px solid #D0D3D4"}
+      border={isFocused || hasContent ? "1px solid #D0D3D4" : "none"}
       pt="0rem"
       pb="1rem"
       px="5px"
@@ -104,8 +95,9 @@ const RichTextEditor: React.FC<richTextEditorProps> = () => {
         <Editor
           editorState={editorState}
           onChange={setEditorState}
-          onBlur={() => console.log("blured")}
-          onFocus={() => console.log("focused")}
+          onBlur={() => setIsFocused(false)}
+          onFocus={() => setIsFocused(true)}
+          editorKey="editor"
         />
       </Box>
       <Avatar
@@ -114,6 +106,7 @@ const RichTextEditor: React.FC<richTextEditorProps> = () => {
           width: "30px",
           height: "30px",
           opacity: hasContent ? 1 : 0.5,
+          display: isFocused || hasContent ? "initial" : "none",
         }}
       ></Avatar>
       <Typography
