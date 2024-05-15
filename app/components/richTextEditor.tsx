@@ -1,7 +1,15 @@
 "use client";
 import React, { useState } from "react";
-import { Editor, EditorState, CompositeDecorator } from "draft-js";
+import {
+  Editor,
+  EditorState,
+  CompositeDecorator,
+  convertFromRaw,
+} from "draft-js";
 import StyledSpan from "./StyledSpan";
+import dynamic from "next/dynamic";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import "draft-js/dist/Draft.css";
 
 //material components
 import Box from "@mui/material/Box";
@@ -10,30 +18,47 @@ import Typography from "@mui/material/Typography";
 
 //icons
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
+// const Editor = dynamic(
+//   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
+//   { ssr: false }
+// );
 
 type richTextEditorProps = {};
 
 const RichTextEditor: React.FC<richTextEditorProps> = () => {
+  const emptyContentState = convertFromRaw({
+    entityMap: {},
+    blocks: [
+      {
+        text: "",
+        key: "foo",
+        type: "unstyled",
+        entityRanges: [],
+        depth: 0,
+        inlineStyleRanges: [],
+      },
+    ],
+  });
   const HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
 
   const HashtagSpan: React.FC<props> = (props) => {
-    console.log(props);
-    return (
-      <span {...props} style={{ color: "red" }}>
-        {props.children}
-      </span>
-    );
+    const children = props.children;
+    const variant = "hashtag";
+    return StyledSpan({ children, variant });
   };
   const compositeDecorator = new CompositeDecorator([
     {
       strategy: hashtagStrategy,
-      component: ({ children }) => StyledSpan({ variant: "hashtag", children }),
+      component: HashtagSpan,
     },
   ]);
 
-  const [editorState, setEditorState] = useState(() =>
+  const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty(compositeDecorator)
   );
+  const onEditorStateChange = (newEditorState: EditorState): void => {
+    setEditorState(newEditorState);
+  };
 
   const hasContent = editorState.getCurrentContent().hasText();
 
@@ -54,6 +79,7 @@ const RichTextEditor: React.FC<richTextEditorProps> = () => {
 
   type props = {
     children: React.ReactNode;
+    variant: string;
   };
 
   return (
@@ -75,7 +101,12 @@ const RichTextEditor: React.FC<richTextEditorProps> = () => {
         // sx={{ position: "absolute", top: "2px", left: "5px" }}
       />
       <Box flexGrow="1">
-        <Editor editorState={editorState} onChange={setEditorState} />
+        <Editor
+          editorState={editorState}
+          onChange={setEditorState}
+          onBlur={() => console.log("blured")}
+          onFocus={() => console.log("focused")}
+        />
       </Box>
       <Avatar
         src="/images/Foto-CV.jpg"
