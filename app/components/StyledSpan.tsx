@@ -16,13 +16,12 @@ const StyledSpan: React.FC<StyledSpanProps> = ({ variant, children }) => {
   const theme = useTheme();
 
   return (
-    // <Typography
-    //   component="span"
-    //   color={variant ? theme.decorators[variant].text : "initial"}
-    // >
-    //   {children}
-    // </Typography>
-    <span>{children}</span>
+    <Typography
+      component="span"
+      color={variant ? theme.decorators[variant].text : "initial"}
+    >
+      {children}
+    </Typography>
   );
 };
 export default StyledSpan;
