@@ -19,6 +19,7 @@ const TaskPanel: React.FC<taskPanelProps> = () => {
   return (
     <div>
       <TextField
+        sx={{ mb: "20px" }}
         InputLabelProps={{ sx: { ml: 4.5 }, shrink: false }}
         name="task"
         label={content ? "" : "Type to add new task"}
@@ -46,14 +47,6 @@ const TaskPanel: React.FC<taskPanelProps> = () => {
         value={content}
         fullWidth
       />
-      <Box
-        component={"div"}
-        onInput={(evt) => console.log(evt.target)}
-        contentEditable
-      >
-        <span>some</span>
-        <span>data</span>
-      </Box>
       <RichTextEditor />
     </div>
   );
