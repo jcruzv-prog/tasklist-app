@@ -44,6 +44,7 @@ declare module "@mui/material/styles" {
     };
   }
 }
+
 const theme = createTheme({
   decorators: {
     hashtag: {
@@ -61,6 +62,15 @@ const theme = createTheme({
     link: {
       text: "#007FFF",
       background: "#D6EBFF",
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+        },
+      },
     },
   },
 });

@@ -5,8 +5,6 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material";
 
-// import { DraftDecoratorComponentProps } from "draft-js";
-
 type StyledSpanProps = {
   variant?: "hashtag" | "email" | "mention" | "link";
   children: React.ReactNode;
@@ -14,7 +12,7 @@ type StyledSpanProps = {
 
 const StyledSpan: React.FC<StyledSpanProps> = ({ variant, children }) => {
   const theme = useTheme();
-
+  console.log("rendering span");
   return (
     <Typography
       component="span"

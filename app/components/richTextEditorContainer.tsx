@@ -1,22 +1,12 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import {
-  Editor,
-  EditorState,
-  CompositeDecorator,
-  convertFromRaw,
-} from "draft-js";
+import React, { useState } from "react";
+import RichTextEditor from "./richTextEditor";
+import ActionsButtonsToolbar from "./actionsButtonsToolbar";
+import Container from "@mui/material/Container";
+
+import { EditorState, CompositeDecorator, convertFromRaw } from "draft-js";
 import StyledSpan from "./styledSpan";
-import "draft-js/dist/Draft.css";
 
-//material components
-import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-
-//icons
-import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
+type richTextEditorContainerProps = {};
 
 type spanProps = {
   children: React.ReactNode;
@@ -47,14 +37,7 @@ const LinkSpan: React.FC<spanProps> = (props) => {
   return StyledSpan({ children, variant });
 };
 
-type richTextEditorProps = {
-  isEditorFocused: boolean;
-  setIsEditorFocused: React.Dispatch<React.SetStateAction<boolean>>;
-  editorState: EditorState;
-  setEditorState: React.Dispatch<React.SetStateAction<EditorState>>;
-};
-
-const RichTextEditor: React.FC<richTextEditorProps> = ({}) => {
+const RichTextEditorContainer: React.FC<richTextEditorContainerProps> = () => {
   const emptyContentState = convertFromRaw({
     entityMap: {},
     blocks: [
@@ -71,7 +54,7 @@ const RichTextEditor: React.FC<richTextEditorProps> = ({}) => {
   const HASHTAG_REGEX = /^\#[\w\u0590-\u05ff]+/g;
   const MENTION_REGEX = /^@\w+/g;
   const EMAILREGEX = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
-  const LINKREGEX = /^https?:\/\/(\w+\.)(\w+\.?)+|^www(\.\w+)(\.\w+)+/g;
+  const LINKREGEX = /^https?:\/\/(\w+\.)(\w+\.?)+|^www(\.\w+)(\.\w+)+/;
 
   const compositeDecorator = new CompositeDecorator([
     {
@@ -92,10 +75,9 @@ const RichTextEditor: React.FC<richTextEditorProps> = ({}) => {
     },
   ]);
 
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty(compositeDecorator)
+  const [editorState, setEditorState] = useState<EditorState>(() =>
+    EditorState.createWithContent(emptyContentState, compositeDecorator)
   );
-
   const editorHasContent: boolean = editorState.getCurrentContent().hasText();
 
   console.log(editorState.getCurrentContent().getPlainText("\u0001"));
@@ -126,48 +108,18 @@ const RichTextEditor: React.FC<richTextEditorProps> = ({}) => {
     }
   }
   return (
-    <Paper square elevation={editorHasContent || isEditorFocused ? 1 : 0}>
-      <Box
-        position="relative"
-        width="100%"
-        height="4rem"
-        pt="0rem"
-        pb="1rem"
-        px="5px"
-        display="flex"
-        justifyContent={"flex-end"}
-        alignItems={"center"}
-        columnGap={"0.5rem"}
-      >
-        <AddBoxOutlinedIcon color="primary" />
-        <Box flexGrow="1">
-          <Editor
-            editorState={editorState}
-            onChange={setEditorState}
-            onBlur={() => setIsEditorFocused(false)}
-            onFocus={() => setIsEditorFocused(true)}
-            editorKey="some"
-          />
-        </Box>
-        <Avatar
-          src="/images/Foto-CV.jpg"
-          sx={{
-            width: "30px",
-            height: "30px",
-            opacity: editorHasContent ? 1 : 0.5,
-            display: isEditorFocused || editorHasContent ? "initial" : "none",
-          }}
-        ></Avatar>
-        <Typography
-          position="absolute"
-          left="3rem"
-          color="GrayText"
-          display={editorHasContent ? "none" : "initial"}
-        >
-          Type to add new task
-        </Typography>
-      </Box>
-    </Paper>
+    <Container maxWidth="xl">
+      <RichTextEditor
+        isEditorFocused={isEditorFocused}
+        setIsEditorFocused={setIsEditorFocused}
+        editorState={editorState}
+        setEditorState={setEditorState}
+      />
+      <ActionsButtonsToolbar
+        isEditorFocused={isEditorFocused}
+        editorHasContent={editorHasContent}
+      />
+    </Container>
   );
 };
-export default RichTextEditor;
+export default RichTextEditorContainer;

@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import StyledSpan from "./StyledSpan";
+import StyledSpan from "./styledSpan";
 import { ThemeProvider } from "@mui/material";
 import theme from "app/theme/theme";
 
