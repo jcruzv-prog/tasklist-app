@@ -51,10 +51,10 @@ const RichTextEditorContainer: React.FC<richTextEditorContainerProps> = () => {
       },
     ],
   });
-  const HASHTAG_REGEX = /^\#[\w\u0590-\u05ff]+/g;
-  const MENTION_REGEX = /^@\w+/g;
+  const HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
+  const MENTION_REGEX = /@\w+/g;
   const EMAILREGEX = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
-  const LINKREGEX = /^https?:\/\/(\w+\.)(\w+\.?)+|^www(\.\w+)(\.\w+)+/;
+  const LINKREGEX = /https?:\/\/(\w+\.)(\w+\.?)+|www(\.\w+)(\.\w+)+/g;
 
   const compositeDecorator = new CompositeDecorator([
     {
