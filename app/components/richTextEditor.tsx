@@ -6,7 +6,6 @@ import "draft-js/dist/Draft.css";
 //material components
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 
 //icons
@@ -45,28 +44,24 @@ const RichTextEditor: React.FC<richTextEditorProps> = ({
           <Editor
             editorState={editorState}
             onChange={setEditorState}
-            onBlur={() => setIsEditorFocused(false)}
             onFocus={() => setIsEditorFocused(true)}
-            editorKey="some"
+            editorKey={crypto.randomUUID()}
+            placeholder="Type to add new task"
           />
         </Box>
-        <Avatar
-          src="/images/Foto-CV.jpg"
-          sx={{
-            width: "30px",
-            height: "30px",
-            opacity: hasContent ? 1 : 0.5,
-            display: isEditorFocused || hasContent ? "initial" : "none",
-          }}
-        ></Avatar>
-        <Typography
-          position="absolute"
-          left="3rem"
-          color="GrayText"
-          display={hasContent ? "none" : "initial"}
-        >
-          Type to add new task
-        </Typography>
+        {isEditorFocused && (
+          <Avatar
+            src="/images/Foto-CV.jpg"
+            alt="avatar"
+            aria-roledescription="img"
+            data-testid="user-avatar"
+            sx={{
+              width: "30px",
+              height: "30px",
+              opacity: hasContent ? 1 : 0.5,
+            }}
+          ></Avatar>
+        )}
       </Box>
     </Paper>
   );

@@ -18,63 +18,85 @@ type actionsButtonsToolbarProps = {
   isEditorFocused?: boolean;
   editorHasContent?: boolean;
   isScreenSmall?: boolean;
+  handleAddTask: () => void;
+  handleCancelTask: () => void;
 };
 
 const ActionsButtonsToolbar: React.FC<actionsButtonsToolbarProps> = ({
   isEditorFocused = false,
   editorHasContent = false,
+  handleAddTask,
+  handleCancelTask,
   isScreenSmall = false,
 }) => {
   return (
-    <Box
-      display={isEditorFocused || editorHasContent ? "block" : "none"}
-      minWidth="900px"
-    >
-      <Paper elevation={2} square sx={{ p: 1, backgroundColor: "#FAFBFB" }}>
-        <Grid container columnSpacing={3}>
-          <Grid>
-            <Button startIcon={<OpenInFullOutlinedIcon />} variant="outlined">
-              Open
-            </Button>
-          </Grid>
-          <Grid container columnSpacing={1}>
+    isEditorFocused && (
+      <Box minWidth="900px">
+        <Paper elevation={2} square sx={{ p: 1, backgroundColor: "#FAFBFB" }}>
+          <Grid container columnSpacing={3}>
             <Grid>
               <Button
-                startIcon={<CalendarTodayOutlinedIcon />}
+                startIcon={<OpenInFullOutlinedIcon />}
                 variant="outlined"
+                disabled={!editorHasContent}
               >
-                Today
+                Open
               </Button>
             </Grid>
-            <Grid>
-              <Button variant="outlined" startIcon={<LockOpenOutlinedIcon />}>
-                Public
-              </Button>
+            <Grid container columnSpacing={1}>
+              <Grid>
+                <Button
+                  disabled={!editorHasContent}
+                  startIcon={<CalendarTodayOutlinedIcon />}
+                  variant="outlined"
+                >
+                  Today
+                </Button>
+              </Grid>
+              <Grid>
+                <Button
+                  variant="outlined"
+                  startIcon={<LockOpenOutlinedIcon />}
+                  disabled={!editorHasContent}
+                >
+                  Public
+                </Button>
+              </Grid>
+              <Grid>
+                <Button
+                  variant="outlined"
+                  startIcon={<FlareOutlinedIcon />}
+                  disabled={!editorHasContent}
+                >
+                  Normal
+                </Button>
+              </Grid>
+              <Grid>
+                <Button
+                  variant="outlined"
+                  startIcon={<AdjustOutlinedIcon />}
+                  disabled={!editorHasContent}
+                >
+                  Estimation
+                </Button>
+              </Grid>
             </Grid>
-            <Grid>
-              <Button variant="outlined" startIcon={<FlareOutlinedIcon />}>
-                Normal
-              </Button>
-            </Grid>
-            <Grid>
-              <Button variant="outlined" startIcon={<AdjustOutlinedIcon />}>
-                Estimation
-              </Button>
+            <Grid container columnSpacing={1} xsOffset={"auto"}>
+              <Grid>
+                <Button variant="contained" onClick={handleCancelTask}>
+                  Cancel
+                </Button>
+              </Grid>
+              <Grid>
+                <Button variant="contained" onClick={handleAddTask}>
+                  {editorHasContent ? "Add" : "Ok"}
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
-          <Grid container columnSpacing={1} xsOffset={"auto"}>
-            <Grid>
-              <Button variant="contained">Cancel</Button>
-            </Grid>
-            <Grid>
-              <Button variant="contained">
-                {editorHasContent ? "Add" : "Ok"}
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Paper>
-    </Box>
+        </Paper>
+      </Box>
+    )
   );
 };
 export default ActionsButtonsToolbar;

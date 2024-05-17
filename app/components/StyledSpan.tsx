@@ -12,7 +12,6 @@ type StyledSpanProps = {
 
 const StyledSpan: React.FC<StyledSpanProps> = ({ variant, children }) => {
   const theme = useTheme();
-  console.log("rendering span");
   return (
     <Typography
       component="span"
