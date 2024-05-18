@@ -3,26 +3,29 @@ import React, { useState } from "react";
 import UpperRichTextEditorContainer from "./upperRichTextEditorContainer";
 import Tasklist from "./tasklist";
 
+//data fetching framework
+import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
+
+//actions
+import { getAll, saveTask } from "app/firebase/database";
+
 //types
 import type { task } from "app/types";
 
 type taskListContainerProps = {};
 
 const TaskListContainer: React.FC<taskListContainerProps> = () => {
-  const [tasks, setTasks] = useState<task[]>([]);
+  const { data: tasks, error } = useSWR("tasks", getAll, { suspense: true });
+  if (error) throw Error;
 
-  const handleSaveTask = (taskData: task) => {
-    if (taskData.id) {
-      setTasks((currentTasks) => [
-        ...currentTasks.filter((task) => task.id !== taskData.id),
-        taskData,
-      ]);
-    } else {
-      setTasks((currentTasks) => [
-        ...currentTasks,
-        { id: crypto.randomUUID(), rawContentState: taskData.rawContentState },
-      ]);
-    }
+  const { trigger: postTrigger, isMutating: isPostMutating } = useSWRMutation(
+    "tasks",
+    saveTask
+  );
+
+  const handleSaveTask = async (taskData: task) => {
+    await postTrigger(taskData);
   };
 
   return (

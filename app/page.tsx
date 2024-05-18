@@ -1,12 +1,33 @@
 export const metadata = {
-  title: "App Router",
+  title: "Tasklist Web App",
 };
-import TaskListContainer from "./components/taskListContainer";
+
+import dynamic from "next/dynamic";
+import { ErrorBoundary } from "react-error-boundary";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+
+const TaskListContainer = dynamic(
+  () => import("../app/components/taskListContainer"),
+  { ssr: false, loading: () => <>Loading tasks..</> }
+);
 export default function Page() {
   return (
     <>
-      <h1>Task App</h1>
-      <TaskListContainer />
+      <Container maxWidth="lg">
+        <Box minWidth={950} pt={5}>
+          <Stack>
+            <Typography variant="h3" component="h1" textAlign={"center"}>
+              Task list
+            </Typography>
+            <ErrorBoundary fallback={<div>Some error ocurred</div>}>
+              <TaskListContainer />
+            </ErrorBoundary>
+          </Stack>
+        </Box>
+      </Container>
     </>
   );
 }
