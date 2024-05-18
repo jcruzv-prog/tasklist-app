@@ -13,7 +13,7 @@ import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 
 type richTextEditorProps = {
   isEditorFocused: boolean;
-  handleOnEditorFocus:()=>void,  
+  handleOnEditorFocus:()=>void, 
   
   editorState: EditorState;
   setEditorState: React.Dispatch<React.SetStateAction<EditorState>>;

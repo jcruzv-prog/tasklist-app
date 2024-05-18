@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import RichTextEditorContainer from "./richTextEditorContainer";
+import UpperRichTextEditorContainer from "./upperRichTextEditorContainer";
 import Tasklist from "./tasklist";
 import {
   EditorState,
@@ -30,28 +31,11 @@ const TaskListContainer: React.FC<taskListContainerProps> = () => {
       setTasks((currentTasks) => [...currentTasks, {id:crypto.randomUUID(),rawContentState:taskData.rawContentState}]);
     }
   };
-
-  const emptyRawContentState = {
-    entityMap: {},
-    blocks: [
-      {
-        text: "",
-        key: "foo",
-        type: "unstyled",
-        entityRanges: [],
-        depth: 0,
-        inlineStyleRanges: [],
-      },
-    ],
-  };
+  
 
   return (
     <div>
-      <RichTextEditorContainer
-        task={{rawContentState:emptyRawContentState}}
-        handleSaveTask={handleSaveTask}
-        position="top"
-      />
+     <UpperRichTextEditorContainer  handleSaveTask={handleSaveTask} />
       <Tasklist tasks={tasks} handleSaveTask={handleSaveTask} />
     </div>
   );

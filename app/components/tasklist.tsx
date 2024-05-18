@@ -18,8 +18,7 @@ const Tasklist: React.FC<tasklistProps> = ({ tasks, handleSaveTask }) => {
     <Box>
       {tasks.map((task, index) => {
         return (
-          <RichTextEditorContainer
-            position="taskList"
+          <RichTextEditorContainer            
             task={task}
             key={index}
             handleSaveTask={handleSaveTask}
