@@ -27,7 +27,7 @@ const TaskListContainer: React.FC<taskListContainerProps> = () => {
         taskData,
       ]);
     } else {
-      setTasks((currentTasks) => [...currentTasks, taskData]);
+      setTasks((currentTasks) => [...currentTasks, {id:crypto.randomUUID(),rawContentState:taskData.rawContentState}]);
     }
   };
 
@@ -48,7 +48,7 @@ const TaskListContainer: React.FC<taskListContainerProps> = () => {
   return (
     <div>
       <RichTextEditorContainer
-        rawContentState={emptyRawContentState}
+        task={{rawContentState:emptyRawContentState}}
         handleSaveTask={handleSaveTask}
         position="top"
       />

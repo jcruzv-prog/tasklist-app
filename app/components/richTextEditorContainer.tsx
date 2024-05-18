@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import RichTextEditor from "./richTextEditor";
 import ActionsButtonsToolbar from "./actionsButtonsToolbar";
-import Container from "@mui/material/Container";
+
 
 import {
   EditorState,
@@ -10,15 +10,20 @@ import {
   convertToRaw,
   ContentBlock,
 } from "draft-js";
-import StyledSpan from "./styledSpan";
-import Tasklist from "./tasklist";
-import { ContentState, RawDraftContentState } from "react-draft-wysiwyg";
+import StyledSpan from "./StyledSpan";
+
+//material components
+import Container from "@mui/material/Container";
+
+//hooks
+import { useMediaQuery } from "@mui/material";
 
 //types
 import type { task } from "app/types";
+import StyledButton from "./styledButton";
 
 type richTextEditorContainerProps = {
-  rawContentState: RawDraftContentState;
+  task:task  
   position: "taskList" | "top";
   handleSaveTask: (task: task) => void;
 };
@@ -52,28 +57,60 @@ const LinkSpan: React.FC<spanProps> = (props) => {
   return StyledSpan({ children, variant });
 };
 
+const HashtagButton: React.FC<spanProps> = (props) => {
+  const children = props.children;
+  const variant = "hashtag";
+  return StyledButton({ children, variant });
+};
+
+const MentionButton: React.FC<spanProps> = (props) => {
+  const children = props.children;
+  const variant = "mention";
+  return StyledButton({ children, variant });
+};
+
+const EmailButton: React.FC<spanProps> = (props) => {
+  const children = props.children;
+  const variant = "email";
+  return StyledButton({ children, variant });
+};
+
+const LinkButton: React.FC<spanProps> = (props) => {
+  const children = props.children;
+  const variant = "link";
+  return StyledButton({ children, variant });
+};
+
+const emptyRawContentState = {
+  entityMap: {},
+  blocks: [
+    {
+      text: "",
+      key: "foo",
+      type: "unstyled",
+      entityRanges: [],
+      depth: 0,
+      inlineStyleRanges: [],
+    },
+  ],
+};
+
 const RichTextEditorContainer: React.FC<richTextEditorContainerProps> = ({
-  rawContentState,
+  task,
   handleSaveTask,
   position,
 }) => {
-  const emptyContentState = convertFromRaw({
-    entityMap: {},
-    blocks: [
-      {
-        text: "",
-        key: "foo",
-        type: "unstyled",
-        entityRanges: [],
-        depth: 0,
-        inlineStyleRanges: [],
-      },
-    ],
-  });
+  const isMoreThan1300px = useMediaQuery('(min-width:1299px)')
+  const contentState = convertFromRaw(task.rawContentState);
   const HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
   const EMAILREGEX = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
   const MENTION_REGEX = /@\w+/g;
   const LINKREGEX = /https?:\/\/(\w+\.)(\w+\.?)+|www(\.\w+)(\.\w+)+/g;
+  
+  const [isEditorFocused, setIsEditorFocused] = useState(false);
+  const rendersButtons = position==="taskList" && isMoreThan1300px && !isEditorFocused  
+ 
+ 
 
   const compositeDecorator = new CompositeDecorator([
     {
@@ -95,33 +132,81 @@ const RichTextEditorContainer: React.FC<richTextEditorContainerProps> = ({
     },
   ]);
 
-  const [editorState, setEditorState] = useState<EditorState>(() =>
-    EditorState.createWithContent(emptyContentState, compositeDecorator)
-  );
+  const buttonCompositeDecorator = new CompositeDecorator([
+    {
+      strategy: hashtagStrategy,
+      component: HashtagButton
+    },
+    {
+      strategy: emailgStrategy,
+      component: EmailButton
+    },
+    {
+      strategy: mentiongStrategy,
+      component: MentionButton
+    },
 
-  const [tasks, setTasks] = useState<RawDraftContentState[]>([]);
+    {
+      strategy: linkStrategy,
+      component: LinkButton
+    },
+  ]);
+
+  const decorator = rendersButtons?buttonCompositeDecorator:compositeDecorator
+
+  const [editorState, setEditorState] = useState<EditorState>(() =>
+    EditorState.createWithContent(contentState, decorator)  );
+
+
+
+  
 
   const handleAddTask = () => {
-    const rawContentState = convertToRaw(editorState.getCurrentContent());
+        
     setIsEditorFocused(false);
+    if(!editorState.getCurrentContent().getPlainText()) return    
+    const decorator = position==="taskList" && isMoreThan1300px?buttonCompositeDecorator:compositeDecorator
+    if(position==="top"){
+      const emptyContentState = convertFromRaw(emptyRawContentState);
     setEditorState(
-      EditorState.createWithContent(emptyContentState, compositeDecorator)
+      EditorState.createWithContent(emptyContentState, decorator)
     );
+  }
+  else(setEditorState(EditorState.createWithContent(editorState.getCurrentContent(), decorator)))
+  const rawContentState = convertToRaw(editorState.getCurrentContent());
 
-    handleSaveTask({ rawContentState });
+    handleSaveTask({id:task.id, rawContentState });
   };
 
   const handleCancelTask = () => {
-    const initialContentState = convertFromRaw(rawContentState);
-    setEditorState(EditorState.createWithContent(initialContentState));
     setIsEditorFocused(false);
+    const initialContentState = convertFromRaw(task.rawContentState); 
+    const decorator = position==="taskList" && isMoreThan1300px?buttonCompositeDecorator:compositeDecorator 
+    setEditorState(EditorState.createWithContent(initialContentState, decorator));    
+    
+   
   };
 
-  const editorHasContent: boolean = editorState.getCurrentContent().hasText();
+  const handleOnEditorFocus =()=>{
+    setIsEditorFocused(true)      
+    const newState= EditorState.set(editorState, {decorator:compositeDecorator})
+    setEditorState(newState)
+   
+  }
 
-  // console.log(editorState.getCurrentContent().getPlainText("\u0001"));
-  // console.log(editorState.getCurrentContent());
-  const [isEditorFocused, setIsEditorFocused] = useState(false);
+ 
+  
+
+  
+
+  
+
+  
+
+
+  const editorHasContent: boolean = editorState.getCurrentContent().hasText();
+  
+
 
   function hashtagStrategy(
     contentBlock: any,
@@ -168,9 +253,10 @@ const RichTextEditorContainer: React.FC<richTextEditorContainerProps> = ({
     <Container maxWidth="xl">
       <RichTextEditor
         isEditorFocused={isEditorFocused}
-        setIsEditorFocused={setIsEditorFocused}
+        handleOnEditorFocus={handleOnEditorFocus}        
         editorState={editorState}
         setEditorState={setEditorState}
+        position={position}        
       />
       <ActionsButtonsToolbar
         isEditorFocused={isEditorFocused}

@@ -1,6 +1,6 @@
 import { RawDraftContentState } from "draft-js";
 
 export type task = {
-  id?: number;
+  id?: string;
   rawContentState: RawDraftContentState;
 };

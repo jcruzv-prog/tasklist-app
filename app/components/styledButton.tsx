@@ -14,7 +14,7 @@ type StyledButtonProps = {
 const StyledButton: React.FC<StyledButtonProps> = ({ variant, children }) => {
   const theme = useTheme();
   return (
-    <Button variant="outlined">
+    <Button variant="outlined" sx={{backgroundColor:variant?theme.decorators[variant].background:'initial'}}>
       <Typography
         component="span"
         color={variant ? theme.decorators[variant].text : "initial"}

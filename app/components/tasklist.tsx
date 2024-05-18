@@ -20,7 +20,7 @@ const Tasklist: React.FC<tasklistProps> = ({ tasks, handleSaveTask }) => {
         return (
           <RichTextEditorContainer
             position="taskList"
-            rawContentState={task.rawContentState}
+            task={task}
             key={index}
             handleSaveTask={handleSaveTask}
           />
