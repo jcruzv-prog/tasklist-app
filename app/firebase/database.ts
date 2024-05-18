@@ -26,7 +26,6 @@ export const getAll = async () => {
 };
 
 export const saveTask = async (key: string, { arg: task }: { arg: task }) => {
-  console.log(task);
   if (!task.id) {
     await addDoc(collection(db, "tasks"), task.rawContentState);
   } else await setDoc(doc(db, "tasks", task.id), task.rawContentState);
