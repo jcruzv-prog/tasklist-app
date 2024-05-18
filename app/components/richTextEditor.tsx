@@ -53,14 +53,14 @@ const RichTextEditor: React.FC<richTextEditorProps> = ({
         columnGap={"0.5rem"}   
         component="div"
         onClick={FocusEditor} 
-        onBlur={BlurEditor}    
+        onBlur={BlurEditor}   
+        data-testid="editor-wrapper" 
       >
         {position==="top"?<AddBoxOutlinedIcon color="primary" />:<input type="checkbox" />}
         <Box flexGrow="1">
           <Editor
             editorState={editorState}
-            onChange={setEditorState}                       
-            editorKey={crypto.randomUUID()}
+            onChange={setEditorState}
             placeholder="Type to add new task"
             ref={editorRef}
           />
