@@ -12,13 +12,14 @@ type StyledSpanProps = {
 
 const StyledSpan: React.FC<StyledSpanProps> = ({ variant, children }) => {
   const theme = useTheme();
-  return (
-    <Typography
-      component="span"
-      color={variant ? theme.decorators[variant].text : "initial"}
-    >
-      {children}
-    </Typography>
-  );
+  if (variant) {
+    return (
+      <Typography component="span" color={theme.decorators[variant].text}>
+        {children}
+      </Typography>
+    );
+  } else {
+    return <Typography component="span">{children}</Typography>;
+  }
 };
 export default StyledSpan;

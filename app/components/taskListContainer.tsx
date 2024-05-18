@@ -1,17 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import RichTextEditorContainer from "./richTextEditorContainer";
 import UpperRichTextEditorContainer from "./upperRichTextEditorContainer";
 import Tasklist from "./tasklist";
-import {
-  EditorState,
-  CompositeDecorator,
-  convertFromRaw,
-  convertToRaw,
-  ContentBlock,
-  RawDraftContentState,
-} from "draft-js";
-import { ContentState } from "react-draft-wysiwyg";
 
 //types
 import type { task } from "app/types";
@@ -28,14 +18,16 @@ const TaskListContainer: React.FC<taskListContainerProps> = () => {
         taskData,
       ]);
     } else {
-      setTasks((currentTasks) => [...currentTasks, {id:crypto.randomUUID(),rawContentState:taskData.rawContentState}]);
+      setTasks((currentTasks) => [
+        ...currentTasks,
+        { id: crypto.randomUUID(), rawContentState: taskData.rawContentState },
+      ]);
     }
   };
-  
 
   return (
     <div>
-     <UpperRichTextEditorContainer  handleSaveTask={handleSaveTask} />
+      <UpperRichTextEditorContainer handleSaveTask={handleSaveTask} />
       <Tasklist tasks={tasks} handleSaveTask={handleSaveTask} />
     </div>
   );

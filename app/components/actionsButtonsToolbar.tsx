@@ -2,7 +2,6 @@ import React from "react";
 
 //material components
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Unstable_Grid2";
 import Paper from "@mui/material/Paper";
 
@@ -15,16 +14,16 @@ import AdjustOutlinedIcon from "@mui/icons-material/AdjustOutlined";
 import { Box } from "@mui/material";
 
 type actionsButtonsToolbarProps = {
-  isEditorFocused?: boolean;
-  editorHasContent?: boolean;
+  isEditorFocused: boolean;
+  editorHasContent: boolean;
   isScreenSmall?: boolean;
   handleAddTask: () => void;
   handleCancelTask: () => void;
 };
 
 const ActionsButtonsToolbar: React.FC<actionsButtonsToolbarProps> = ({
-  isEditorFocused = false,
-  editorHasContent = false,
+  isEditorFocused,
+  editorHasContent,
   handleAddTask,
   handleCancelTask,
   isScreenSmall = false,

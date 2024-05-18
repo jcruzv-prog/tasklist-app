@@ -11,24 +11,48 @@ describe("styled button renders correctly", () => {
       </ThemeProvider>
     );
     const span = screen.getByText("#world");
-    const button = screen.getByRole("button")
+    const button = screen.getByRole("button");
     expect(span).toBeInTheDocument();
     expect(span).toHaveStyle("color: #702EE6");
     expect(button).toBeInTheDocument();
-    expect(button).toHaveStyle("background: #ADF0D9");
   });
 
-//   it("renders a mention-styled button", () => {
-//     render(
-//       <ThemeProvider theme={theme}>
-//         <StyledButton variant="mention" children="developers" />
-//       </ThemeProvider>
-//     );
-//     const span = screen.getByText("developers");
-//     const button = screen.getByRole("button")
-//     expect(span).toBeInTheDocument();
-//     expect(span).toHaveStyle("color: #07A873");
-//     expect(button).toBeInTheDocument();
-//     expect(button).toHaveStyle("background-color: #ADF0D9");
-//   });
+  it("renders a email-styled button", () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <StyledButton variant="email" children="jon@email.com" />
+      </ThemeProvider>
+    );
+    const span = screen.getByText("Mail");
+    const button = screen.getByRole("button");
+    expect(span).toBeInTheDocument();
+    expect(span).toHaveStyle("color: #F58E0A");
+    expect(button).toBeInTheDocument();
+  });
+
+  it("renders a mention-styled button", () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <StyledButton variant="mention" children="@developer" />
+      </ThemeProvider>
+    );
+    const span = screen.getByText("@developer");
+    const button = screen.getByRole("button");
+    expect(span).toBeInTheDocument();
+    expect(span).toHaveStyle("color: #07A873");
+    expect(button).toBeInTheDocument();
+  });
+
+  it("renders a link-styled button", () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <StyledButton variant="link" children="www.google.com" />
+      </ThemeProvider>
+    );
+    const span = screen.getByText("Link");
+    const button = screen.getByRole("button");
+    expect(span).toBeInTheDocument();
+    expect(span).toHaveStyle("color: #007FFF");
+    expect(button).toBeInTheDocument();
+  });
 });

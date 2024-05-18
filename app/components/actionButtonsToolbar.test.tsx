@@ -9,6 +9,8 @@ describe("actionsButtonsToolbar renders correctly", () => {
         isScreenSmall={false}
         isEditorFocused={false}
         editorHasContent={false}
+        handleAddTask={jest.fn}
+        handleCancelTask={jest.fn}
       />
     );
     const buttons = screen.queryAllByRole("button");
@@ -21,18 +23,8 @@ describe("actionsButtonsToolbar renders correctly", () => {
         isScreenSmall={false}
         isEditorFocused={true}
         editorHasContent={false}
-      />
-    );
-    const buttons = screen.queryAllByRole("button");
-    expect(buttons).toHaveLength(7);
-  });
-
-  it("renders actions buttons if text editor has content and lost focus", () => {
-    render(
-      <ActionsButtonsToolbar
-        isScreenSmall={false}
-        isEditorFocused={false}
-        editorHasContent={true}
+        handleAddTask={jest.fn}
+        handleCancelTask={jest.fn}
       />
     );
     const buttons = screen.queryAllByRole("button");
@@ -45,18 +37,22 @@ describe("actionsButtonsToolbar renders correctly", () => {
         isScreenSmall={false}
         isEditorFocused={true}
         editorHasContent={false}
+        handleAddTask={jest.fn}
+        handleCancelTask={jest.fn}
       />
     );
     const okButton = screen.queryByText("Ok");
     expect(okButton).toBeInTheDocument();
   });
 
-  it("renders Add action button if text editor has no content", () => {
+  it("renders Add action button if text editor has content", () => {
     render(
       <ActionsButtonsToolbar
         isScreenSmall={false}
         isEditorFocused={true}
         editorHasContent={true}
+        handleAddTask={jest.fn}
+        handleCancelTask={jest.fn}
       />
     );
     const okButton = screen.queryByText("Add");

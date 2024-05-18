@@ -13,31 +13,26 @@ import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 
 type richTextEditorProps = {
   isEditorFocused: boolean;
-  handleOnEditorFocus:()=>void, 
-  
+  handleOnEditorFocus: () => void;
   editorState: EditorState;
-  setEditorState: React.Dispatch<React.SetStateAction<EditorState>>;
-  position:"top" | "taskList"
-  
+  handleEdition: (newState: EditorState) => void;
+  position: "top" | "taskList";
 };
 
 const RichTextEditor: React.FC<richTextEditorProps> = ({
   isEditorFocused,
-  handleOnEditorFocus,  
+  handleOnEditorFocus,
   editorState,
-  setEditorState,
-  position
+  handleEdition,
+  position,
 }) => {
   const hasContent = editorState.getCurrentContent().hasText();
   const editorRef = React.useRef<Editor>(null);
-  const FocusEditor = ()=>{
+  const FocusEditor = () => {
     handleOnEditorFocus();
-    editorRef?.current?.focus()
-  }
+    editorRef?.current?.focus();
+  };
 
-  const BlurEditor = ()=>{    
-    editorRef?.current?.blur()
-  }
   return (
     <Paper square elevation={hasContent || isEditorFocused ? 1 : 0}>
       <Box
@@ -50,17 +45,20 @@ const RichTextEditor: React.FC<richTextEditorProps> = ({
         display="flex"
         justifyContent={"flex-end"}
         alignItems={"center"}
-        columnGap={"0.5rem"}   
+        columnGap={"0.5rem"}
         component="div"
-        onClick={FocusEditor} 
-        onBlur={BlurEditor}   
-        data-testid="editor-wrapper" 
+        onClick={FocusEditor}
+        data-testid="editor-wrapper"
       >
-        {position==="top"?<AddBoxOutlinedIcon color="primary" />:<input type="checkbox" />}
+        {position === "top" ? (
+          <AddBoxOutlinedIcon color="primary" />
+        ) : (
+          <input type="checkbox" />
+        )}
         <Box flexGrow="1">
           <Editor
             editorState={editorState}
-            onChange={setEditorState}
+            onChange={handleEdition}
             placeholder="Type to add new task"
             ref={editorRef}
           />

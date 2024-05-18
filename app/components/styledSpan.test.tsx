@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import StyledSpan from "./StyledSpan";
+import StyledSpan from "./styledSpan";
 import { ThemeProvider } from "@mui/material";
 import theme from "app/theme/theme";
 
@@ -46,5 +46,15 @@ describe("styled span renders correctly", () => {
     const span = screen.getByText("www.google.com");
     expect(span).toBeInTheDocument();
     expect(span).toHaveStyle("color: #007FFF");
+  });
+
+  it("renders a no-styled span", () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <StyledSpan children="just text" />
+      </ThemeProvider>
+    );
+    const span = screen.getByText("just text");
+    expect(span).toBeInTheDocument();
   });
 });
