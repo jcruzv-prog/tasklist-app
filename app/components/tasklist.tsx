@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 //material components
 import Box from "@mui/material/Box";
@@ -13,11 +13,11 @@ type tasklistProps = {
 const Tasklist: React.FC<tasklistProps> = ({ tasks, handleSaveTask }) => {
   return (
     <Box>
-      {tasks.map((task, index) => {
+      {tasks.map((task) => {
         return (
           <RichTextEditorContainer
             task={task}
-            key={index}
+            key={task.id}
             handleSaveTask={handleSaveTask}
           />
         );

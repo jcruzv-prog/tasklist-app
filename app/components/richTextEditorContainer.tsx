@@ -148,10 +148,10 @@ const RichTextEditorContainer: React.FC<richTextEditorContainerProps> = ({
 
   const handleOnEditorFocus = () => {
     setIsEditorFocused(true);
-    const newState = EditorState.set(editorState, {
-      decorator: compositeDecorator,
-    });
-    setEditorState(newState);
+    // const newState = EditorState.set(editorState, {
+    //   decorator: compositeDecorator,
+    // });
+    // setEditorState(newState);
   };
 
   const handleEdition = (newEditorState: EditorState) => {

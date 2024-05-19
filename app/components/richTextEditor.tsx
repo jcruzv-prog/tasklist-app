@@ -30,7 +30,7 @@ const RichTextEditor: React.FC<richTextEditorProps> = ({
   const editorRef = React.useRef<Editor>(null);
   const FocusEditor = () => {
     handleOnEditorFocus();
-    editorRef?.current?.focus();
+    if (position === "top") editorRef?.current?.focus();
   };
 
   return (
@@ -61,6 +61,7 @@ const RichTextEditor: React.FC<richTextEditorProps> = ({
             onChange={handleEdition}
             placeholder="Type to add new task"
             ref={editorRef}
+            readOnly={!isEditorFocused}
           />
         </Box>
         {isEditorFocused && (
