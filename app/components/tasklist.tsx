@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 
 //material components
-import Grid from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
-import { RawDraftContentState } from "react-draft-wysiwyg";
-import { convertFromRaw, EditorState, Editor } from "draft-js";
 import RichTextEditorContainer from "./richTextEditorContainer";
 
 import type { task } from "app/types";
@@ -18,7 +15,7 @@ const Tasklist: React.FC<tasklistProps> = ({ tasks, handleSaveTask }) => {
     <Box>
       {tasks.map((task, index) => {
         return (
-          <RichTextEditorContainer            
+          <RichTextEditorContainer
             task={task}
             key={index}
             handleSaveTask={handleSaveTask}
