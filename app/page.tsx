@@ -1,33 +1,17 @@
-export const metadata = {
-  title: "Tasklist Web App",
+"use client";
+import React, { ReactElement } from "react";
+import AuthUserProvider from "./firebase/auth";
+import Home from "./components/home";
+
+type pageProps = {
+  children: ReactElement;
 };
 
-import dynamic from "next/dynamic";
-import { ErrorBoundary } from "react-error-boundary";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-
-const TaskListContainer = dynamic(
-  () => import("../app/components/taskListContainer"),
-  { ssr: false, loading: () => <>Loading tasks..</> }
-);
-export default function Page() {
+const app: React.FC<pageProps> = () => {
   return (
-    <>
-      <Container maxWidth="lg">
-        <Box minWidth={950} pt={5}>
-          <Stack>
-            <Typography variant="h3" component="h1" textAlign={"center"}>
-              Task list
-            </Typography>
-            <ErrorBoundary fallback={<div>Some error ocurred</div>}>
-              <TaskListContainer />
-            </ErrorBoundary>
-          </Stack>
-        </Box>
-      </Container>
-    </>
+    <AuthUserProvider>
+      <Home></Home>
+    </AuthUserProvider>
   );
-}
+};
+export default app;

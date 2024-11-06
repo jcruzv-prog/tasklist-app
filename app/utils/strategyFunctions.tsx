@@ -8,38 +8,41 @@ export function hashtagStrategy(
   contentBlock: ContentBlock,
   callback: (start: number, end: number) => void
 ) {
-  findWithRegex(HASHTAG_REGEX, contentBlock, callback);
+  const contentBlockText = contentBlock.getText();
+  findWithRegex(HASHTAG_REGEX, contentBlockText, callback);
 }
 
 export function mentiongStrategy(
   contentBlock: ContentBlock,
   callback: (start: number, end: number) => void
 ) {
-  findWithRegex(MENTION_REGEX, contentBlock, callback);
+  const contentBlockText = contentBlock.getText();
+  findWithRegex(MENTION_REGEX, contentBlockText, callback);
 }
 
 export function emailgStrategy(
   contentBlock: ContentBlock,
   callback: (start: number, end: number) => void
 ) {
-  findWithRegex(EMAILREGEX, contentBlock, callback);
+  const contentBlockText = contentBlock.getText();
+  findWithRegex(EMAILREGEX, contentBlockText, callback);
 }
 
 export function linkStrategy(
   contentBlock: ContentBlock,
   callback: (start: number, end: number) => void
 ) {
-  findWithRegex(LINKREGEX, contentBlock, callback);
+  const contentBlockText = contentBlock.getText();
+  findWithRegex(LINKREGEX, contentBlockText, callback);
 }
 
 export function findWithRegex(
   regex: RegExp,
-  contentBlock: ContentBlock,
+  contentBlockText: string,
   callback: (start: number, end: number) => void
 ) {
-  const text = contentBlock.getText();
   let matchArr, start;
-  while ((matchArr = regex.exec(text)) !== null) {
+  while ((matchArr = regex.exec(contentBlockText)) !== null) {
     start = matchArr.index;
     callback(start, start + matchArr[0].length);
   }

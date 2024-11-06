@@ -8,8 +8,13 @@ import {
   CompositeDecorator,
   convertFromRaw,
   convertToRaw,
-  ContentBlock,
 } from "draft-js";
+import {
+  hashtagStrategy,
+  emailgStrategy,
+  mentiongStrategy,
+  linkStrategy,
+} from "../utils/strategyFunctions";
 import StyledSpan from "./styledSpan";
 
 //material components
@@ -27,30 +32,12 @@ type richTextEditorContainerProps = {
   handleSaveTask: (task: task) => void;
 };
 
-const emptyRawContentState = {
-  entityMap: {},
-  blocks: [
-    {
-      text: "",
-      key: "foo",
-      type: "unstyled",
-      entityRanges: [],
-      depth: 0,
-      inlineStyleRanges: [],
-    },
-  ],
-};
-
 const RichTextEditorContainer: React.FC<richTextEditorContainerProps> = ({
   task,
   handleSaveTask,
 }) => {
   const isMoreThan1300px = useMediaQuery("(min-width:1299px)");
   const contentState = convertFromRaw(task.rawContentState);
-  const HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
-  const EMAILREGEX = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
-  const MENTION_REGEX = /@\w+/g;
-  const LINKREGEX = /https?:\/\/(\w+\.)(\w+\.?)+|www(\.\w+)(\.\w+)+/g;
 
   const [isEditorFocused, setIsEditorFocused] = useState(false);
   const [isTextEdited, setIsTextEdited] = useState(false);
@@ -148,10 +135,6 @@ const RichTextEditorContainer: React.FC<richTextEditorContainerProps> = ({
 
   const handleOnEditorFocus = () => {
     setIsEditorFocused(true);
-    // const newState = EditorState.set(editorState, {
-    //   decorator: compositeDecorator,
-    // });
-    // setEditorState(newState);
   };
 
   const handleEdition = (newEditorState: EditorState) => {
@@ -163,47 +146,6 @@ const RichTextEditorContainer: React.FC<richTextEditorContainerProps> = ({
     }
     setEditorState(newEditorState);
   };
-
-  function hashtagStrategy(
-    contentBlock: any,
-    callback: (start: number, end: number) => void
-  ) {
-    findWithRegex(HASHTAG_REGEX, contentBlock, callback);
-  }
-
-  function mentiongStrategy(
-    contentBlock: any,
-    callback: (start: number, end: number) => void
-  ) {
-    findWithRegex(MENTION_REGEX, contentBlock, callback);
-  }
-
-  function emailgStrategy(
-    contentBlock: any,
-    callback: (start: number, end: number) => void
-  ) {
-    findWithRegex(EMAILREGEX, contentBlock, callback);
-  }
-
-  function linkStrategy(
-    contentBlock: any,
-    callback: (start: number, end: number) => void
-  ) {
-    findWithRegex(LINKREGEX, contentBlock, callback);
-  }
-
-  function findWithRegex(
-    regex: RegExp,
-    contentBlock: ContentBlock,
-    callback: (start: number, end: number) => void
-  ) {
-    const text = contentBlock.getText();
-    let matchArr, start;
-    while ((matchArr = regex.exec(text)) !== null) {
-      start = matchArr.index;
-      callback(start, start + matchArr[0].length);
-    }
-  }
 
   return (
     <Container maxWidth="xl">
