@@ -7,11 +7,11 @@ type pageProps = {
   children: ReactElement;
 };
 
-const app: React.FC<pageProps> = () => {
+const App: React.FC<pageProps> = () => {
   return (
     <AuthUserProvider>
-      <Home></Home>
+      <Home />
     </AuthUserProvider>
   );
 };
-export default app;
+export default App;
