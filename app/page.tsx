@@ -1,11 +1,9 @@
 "use client";
-import React, { ReactElement } from "react";
+import React from "react";
 import AuthUserProvider from "./firebase/auth";
 import Home from "./components/home";
 
-type pageProps = {
-  children: ReactElement;
-};
+type pageProps = {};
 
 const App: React.FC<pageProps> = () => {
   return (
