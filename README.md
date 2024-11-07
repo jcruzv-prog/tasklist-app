@@ -1,35 +1,37 @@
-# Next.js + Jest
+# Rich text editor for tasks
 
-This example shows how to configure Jest to work with Next.js.
-
-This includes Next.js' built-in support for Global CSS, CSS Modules and TypeScript. This example also shows how to use Jest with the App Router and React Server Components.
-
-> **Note:** Since tests can be co-located alongside other files inside the App Router, we have placed those tests in `app/` to demonstrate this behavior (which is different than `pages/`). You can still place all tests in `__tests__` if you prefer.
-
-## Deploy your own
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-jest&project-name=with-jest&repository-name=with-jest)
+Rich text editor for tasks,  made with React, Next.js, Firebase/Firestore, Material UI, Jest and deployed in Vercel.
 
 ## How to Use
 
-Quickly get started using [Create Next App](https://github.com/vercel/next.js/tree/canary/packages/create-next-app#readme)!
+In your terminal, run the following commands to start in selected mode:
 
-In your terminal, run the following command:
-
-```bash
-npx create-next-app --example with-jest with-jest-app
-```
+## Dev mode
 
 ```bash
-yarn create next-app --example with-jest with-jest-app
+npm run dev
 ```
+## Build enhanced production output directory
 
 ```bash
-pnpm create next-app --example with-jest with-jest-app
+npm run build
 ```
+
+## Start production server (after created production build)
+
+```bash
+npm run start
+```
+
+
 
 ## Running Tests
 
 ```bash
-npm test
+npm run test
 ```
+
+
+## To see Vercel-hosted app follow the link:
+
+[Visit Vercel hosted app](https://tasklist-app-three.vercel.app) 
